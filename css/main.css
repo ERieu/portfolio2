@@ -1,0 +1,273 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* header start */
+
+.hamburger {
+  cursor: pointer;
+  border: none;
+}
+
+.hamburger input {
+  display: none;
+}
+
+.hamburger svg {
+  /* The size of the SVG defines the overall size */
+  height: 3rem;
+  /* Define the transition for transforming the SVG */
+  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line {
+  fill: none;
+  stroke: rgb(255, 255, 255);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line-top-bottom {
+  stroke-dasharray: 12 63;
+}
+
+.hamburger input:checked + svg {
+  transform: rotate(-45deg);
+}
+
+.hamburger input:checked + svg .line-top-bottom {
+  stroke-dasharray: 20 300;
+  stroke-dashoffset: -32.42;
+}
+
+/* header end */
+
+/* about me section start */
+
+.horizontal-timeline {
+  margin: 40px 0;
+}
+
+.timeline-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 55px;
+}
+
+.timeline-arrow {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 15px;
+}
+
+.timeline-arrow:disabled {
+  color: #555;
+  cursor: not-allowed;
+}
+
+.timeline-progress {
+  width: 80%;
+  margin: 0 20px;
+}
+
+.timeline-track {
+  position: relative;
+  height: 15px;
+  background-color: #222;
+  margin-bottom: 20px;
+}
+
+.progress-line {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #000000 0%, #ffffff 100%);
+  transition: width 0.5s ease;
+  border-radius: 8px;
+}
+
+.timeline-point {
+  position: absolute;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  background-color: #400000;
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.timeline-point.active {
+  background: #ff0000;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.timeline-point[data-year="2022"] { left: 0%; }
+.timeline-point[data-year="2023"] { left: 50%; }
+.timeline-point[data-year="2024"] { left: 100%; }
+
+.timeline-point-mini {
+  position: absolute;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  background-color: #400000;
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.timeline-point-mini[data-month="6-2023"] { left: 25%; }
+.timeline-point-mini[data-month="6-2022"] { left: 75%; }
+
+.timeline-point-mini.active {
+  background: #ff0000;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.timeline-years {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  position: relative;
+}
+
+.timeline-years span {
+  position: absolute;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.timeline-years span:nth-child(1) { left: 100%; }
+.timeline-years span:nth-child(2) { left: 50%; }
+.timeline-years span:nth-child(3) { left: 0%; }
+
+.timeline-cards {
+  position: relative;
+  min-height: 400px;
+}
+
+.timeline-card {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.timeline-card.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.timeline-custom-card {
+  width: 100%;
+  height: auto;
+  min-height: 300px;
+}
+
+.card-content {
+  margin-top: 20px;
+  color: white;
+}
+
+/* about me section end */
+
+/* projects section start */
+
+.cards-container {
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.projects-card {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  gap: 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  color: #000000;
+  margin: 30px;
+}
+
+.projects-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: -5px;
+  margin: auto;
+  width: 260px;
+  height: 260px;
+  border-radius: 15px;
+  background: rgb(255, 255, 255)/*linear-gradient(-45deg, #1cc2ff 0%, #ff261b 100%)*/;
+  z-index: -10;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+/*
+.projects-card::after {
+  content: "";
+  z-index: -16;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, #1cffa4 0%, #ff01aee6 100%);
+  background: rgb(255, 0, 0);
+  transform: translate3d(0, 0, 0) scale(0.90);
+  filter: blur(20px);
+}
+*/
+.heading {
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.projects-card p:not(.heading) {
+  font-size: 20px;
+  color: #000000;
+}
+
+.projects-card p:not::after {
+  font-size: 0px;
+  color: #ffffff;
+}
+
+.projects-card p:last-child {
+  color: #ff0000;
+}
+
+.projects-card:hover::after {
+  filter: blur(50px);
+}
+
+.projects-card:hover::before {
+  transform: rotate(-90deg) scaleX(1.10) scaleY(1.10);
+}
+
+.projects-card:hover {
+  transform: scale(1);
+}
+
+/* projects section end */

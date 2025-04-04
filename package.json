@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.86.0"
+  },
+  "scripts": {
+    "sass": "sass scss/custom.scss:css/styles.css",
+    "sass:watch": "sass --watch scss/custom.scss:css/styles.css"
+  }
+}
