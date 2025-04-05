@@ -50,14 +50,14 @@
 /* about me section start */
 
 .horizontal-timeline {
-  margin: 40px 0;
+  margin: 50px 0;
 }
 
 .timeline-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 55px;
+  margin-bottom: 30px;
 }
 
 .timeline-arrow {
@@ -76,85 +76,53 @@
 }
 
 .timeline-progress {
-  width: 80%;
+  width: 100%;
   margin: 0 20px;
 }
 
 .timeline-track {
   position: relative;
-  height: 15px;
-  background-color: #222;
-  margin-bottom: 20px;
+  height: 4px;
+  background-color: #333;
+  margin-bottom: 10px;
 }
 
 .progress-line {
   position: absolute;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #000000 0%, #ffffff 100%);
-  transition: width 0.5s ease;
-  border-radius: 8px;
+  background: linear-gradient(90deg, #1cc2ff 0%, #ff261b 100%);
+  transition: width 0.3s ease;
 }
 
 .timeline-point {
   position: absolute;
-  z-index: 1;
-  width: 30px;
-  height: 30px;
-  background-color: #400000;
+  width: 16px;
+  height: 16px;
+  background-color: #333;
   border-radius: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease in out;
+  z-index: 1;
 }
 
 .timeline-point.active {
-  background: #ff0000;
+  background: linear-gradient(-45deg, #1cffa4 0%, #ff01aee6 100%);
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-.timeline-point[data-year="2022"] { left: 0%; }
-.timeline-point[data-year="2023"] { left: 50%; }
-.timeline-point[data-year="2024"] { left: 100%; }
-
-.timeline-point-mini {
-  position: absolute;
-  z-index: 1;
-  width: 22px;
-  height: 22px;
-  background-color: #400000;
-  border-radius: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.timeline-point-mini[data-month="6-2023"] { left: 25%; }
-.timeline-point-mini[data-month="6-2022"] { left: 75%; }
-
-.timeline-point-mini.active {
-  background: #ff0000;
-  transform: translate(-50%, -50%) scale(1.1);
-}
+.timeline-point[data-year="2020-2021"] { left: 0% }
+.timeline-point[data-year="2021-2022"] { left: 25%; }
+.timeline-point[data-year="2022-2023"] { left: 50%; }
+.timeline-point[data-year="2023-2024"] { left: 75%; }
+.timeline-point[data-year="2024-2025"] { left: 100%; }
 
 .timeline-years {
   display: flex;
   justify-content: space-between;
-  margin-top: 5px;
-  position: relative;
 }
-
-.timeline-years span {
-  position: absolute;
-  transform: translateX(-50%);
-  text-align: center;
-}
-
-.timeline-years span:nth-child(1) { left: 100%; }
-.timeline-years span:nth-child(2) { left: 50%; }
-.timeline-years span:nth-child(3) { left: 0%; }
 
 .timeline-cards {
   position: relative;

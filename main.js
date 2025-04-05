@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadComponent('footer.html', 'footer');
 });
 
-// Fonction pour ajouter un fond au header lors du défilement
 window.addEventListener('scroll', function() {
     const header = document.querySelector('header.navbar');
     if (header) {
@@ -59,72 +58,41 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// 1. Correction du JavaScript pour les points-mini
 document.addEventListener('DOMContentLoaded', function() {
-    const timelinePoints = document.querySelectorAll('.timeline-point');
-    const timelineMiniPoints = document.querySelectorAll('.timeline-point-mini');
-    const allPoints = [...timelinePoints, ...timelineMiniPoints]; // Ordre correct des points
-    const timelineCards = document.querySelectorAll('.timeline-card');
-    const prevArrow = document.querySelector('.prev-arrow');
-    const nextArrow = document.querySelector('.next-arrow');
-    const progressLine = document.querySelector('.progress-line');
-    
-    let currentIndex = 0;
-    
-    function updateTimeline(index) {
-      // Désactiver tous les points
-      allPoints.forEach(point => point.classList.remove('active'));
-      
-      // Activer uniquement le point actuel
-      allPoints[index].classList.add('active');
-      
-      // Mise à jour des cartes (uniquement pour les points principaux)
-      const selectedPoint = allPoints[index];
-      const isMainPoint = selectedPoint.classList.contains('timeline-point');
-      
-      if (isMainPoint) {
-        const dataYear = selectedPoint.getAttribute('data-year');
-        timelineCards.forEach(card => {
-          card.classList.toggle('active', card.getAttribute('data-year') === dataYear);
-        });
-      } else {
-        // Pour les mini-points, on trouve la carte la plus proche
-        const dataMonth = selectedPoint.getAttribute('data-month');
-        const [month, year] = dataMonth.split('-');
-        timelineCards.forEach(card => {
-          card.classList.toggle('active', card.getAttribute('data-year') === year);
-        });
-      }
-      
-      // Mise à jour de la ligne de progression
-      const pointPosition = parseFloat(getComputedStyle(allPoints[index]).left);
-      const trackWidth = parseFloat(getComputedStyle(document.querySelector('.timeline-track')).width);
-      const progressPercentage = (pointPosition / trackWidth) * 100;
-      progressLine.style.width = `${progressPercentage}%`;
-      
-      // Activation/désactivation des flèches
-      prevArrow.disabled = index === 0;
-      nextArrow.disabled = index === allPoints.length - 1;
-      
-      currentIndex = index;
-    }
-    
-    // Ajout d'écouteurs d'événements pour tous les points
-    allPoints.forEach((point, index) => {
-      point.addEventListener('click', () => {
-        updateTimeline(index);
-      });
+  const timelinePoints = document.querySelectorAll('.timeline-point');
+  const timelineCards = document.querySelectorAll('.timeline-card');
+  const prevArrow = document.querySelector('.prev-arrow');
+  const nextArrow = document.querySelector('.next-arrow');
+  const progressLine = document.querySelector('.progress-line');
+  
+  let currentIndex = 0;
+  
+  function updateTimeline(index) {
+    timelinePoints.forEach((point, i) => {
+      point.classList.toggle('active', i === index);
     });
     
-    // Gestion des flèches
-    prevArrow.addEventListener('click', () => {
-      if (currentIndex > 0) updateTimeline(currentIndex - 1);
+    timelineCards.forEach((card, i) => {
+      card.classList.toggle('active', i === index);
     });
     
-    nextArrow.addEventListener('click', () => {
-      if (currentIndex < allPoints.length - 1) updateTimeline(currentIndex + 1);
-    });
+    progressLine.style.width = `${index * 50}%`;
     
-    // Initialisation
-    updateTimeline(0);
+    prevArrow.disabled = index === 0;
+    nextArrow.disabled = index === timelinePoints.length - 1;
+    
+    currentIndex = index;
+  }
+  
+  timelinePoints.forEach((point, index) => {
+    point.addEventListener('click', () => updateTimeline(index));
+  });
+  
+  prevArrow.addEventListener('click', () => {
+    if (currentIndex > 0) updateTimeline(currentIndex - 1);
+  });
+  
+  nextArrow.addEventListener('click', () => {
+    if (currentIndex < timelinePoints.length - 1) updateTimeline(currentIndex + 1);
+  });
 });
