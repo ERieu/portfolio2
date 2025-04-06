@@ -50,14 +50,14 @@
 /* about me section start */
 
 .horizontal-timeline {
-  margin: 30px 0;
+  margin: 40px 0;
 }
 
 .timeline-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
 }
 
 .timeline-arrow {
@@ -76,8 +76,8 @@
 }
 
 .timeline-progress {
-  width: 90%;
-  margin: 0 20px;
+  width: 80%;
+  margin: 20px;
 }
 
 .timeline-track {
@@ -123,7 +123,6 @@
 .timeline-years {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
   position: relative;
   width: 100%;
 }
@@ -131,14 +130,15 @@
 .timeline-years span {
   position: absolute;
   transform: translateX(-50%);
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 } 
 
 .timeline-years span:nth-child(1) { left: 0%; }
 .timeline-years span:nth-child(2) { left: 25%; }
 .timeline-years span:nth-child(3) { left: 50%; }
 .timeline-years span:nth-child(4) { left: 75%; }
-.timeline-years span:nth-child(5) { left: 100%; transform: translateX(-100%); }
+.timeline-years span:nth-child(5) { left: 100%; }
 
 .timeline-cards {
   position: relative;
@@ -247,7 +247,7 @@
 }
 
 .projects-card:hover::before {
-  transform: rotate(-90deg) scaleX(1.10) scaleY(1.10);
+  transform: rotate(-90deg) scaleX(1.1) scaleY(1.1);
 }
 
 .projects-card:hover {
