@@ -69,13 +69,9 @@ const progressLine = document.querySelector('.progress-line');
 let currentIndex = 0;
 
 function updateTimeline(index) {
-  // Mettre à jour les points actifs
+
   timelinePoints.forEach((point, i) => {
-    if (i <= index) {
-      point.classList.add('active');
-    } else {
-      point.classList.remove('active');
-    }
+    point.classList.toggle('active', i === index);
   });
   
   // Mettre à jour la carte active
