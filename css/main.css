@@ -76,8 +76,8 @@
 }
 
 .timeline-progress {
-  width: 80%;
-  margin: 20px;
+  width: 90%;
+  
 }
 
 .timeline-track {
@@ -142,7 +142,7 @@
 
 .timeline-cards {
   position: relative;
-  min-height: 400px;
+  min-height: 100px;
 }
 
 .timeline-card {
@@ -187,13 +187,11 @@
   background-color: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 12px;
-  gap: 12px;
-  border-radius: 15px;
+  justify-content: center;
+  border-radius: 8px;
   cursor: pointer;
   color: #000000;
-  margin: 30px;
+  margin: 40px;
 }
 
 .projects-card::before {
@@ -204,7 +202,7 @@
   margin: auto;
   width: 260px;
   height: 260px;
-  border-radius: 15px;
+  border-radius: 8px;
   background: rgb(255, 255, 255)/*linear-gradient(-45deg, #1cc2ff 0%, #ff261b 100%)*/;
   z-index: -10;
   pointer-events: none;
@@ -233,13 +231,13 @@
   color: #000000;
 }
 
-.projects-card p:not::after {
+/*.projects-card p:not::after {
   font-size: 0px;
   color: #ffffff;
-}
+}*/
 
 .projects-card p:last-child {
-  color: #ff0000;
+  color: #000000;
 }
 
 .projects-card:hover::after {
