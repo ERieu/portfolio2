@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
   feedContainer.innerHTML = '<div class="d-flex justify-content-center my-3"><div class="spinner-border text-light" role="status"><span class="visually-hidden">Chargement...</span></div></div>';
   
   // URL du flux RSS
-  const rssUrl = "https://godotengine.org/news/index.xml";
+  const rssUrl = "https://godotengine.org/rss.xml";
   
   // Utiliser rss2json comme service de conversion pour contourner les problèmes CORS
   const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
