@@ -105,27 +105,32 @@ nextArrow.addEventListener('click', () => {
 updateTimeline(0);
 });
 
-fetch("https://corsproxy.io/?" + encodeURIComponent("https://godotengine.org/news/index.xml"))
-  .then(response => response.text())
-  .then(str => {
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(str, "application/xml");
-    const items = xml.querySelectorAll("item");
-    let output = '<ul class="list-group">';
-    for (let i = 0; i < Math.min(5, items.length); i++) {
-      const title = items[i].querySelector("title").textContent;
-      const link = items[i].querySelector("link").textContent;
-      const pubDate = new Date(items[i].querySelector("pubDate").textContent).toLocaleDateString();
-      output += `
-        <li class="list-group-item">
-          <a href="${link}" target="_blank" class="fw-bold">${title}</a><br>
-          <small class="text-muted">${pubDate}</small>
-        </li>`;
-    }
-    output += '</ul>';
-    document.getElementById("godot-feed").innerHTML = output;
-  })
-  .catch(error => {
-    console.error("Erreur lors du chargement du flux RSS :", error);
-    document.getElementById("godot-feed").innerText = "Impossible de charger les articles.";
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("https://corsproxy.io/?" + encodeURIComponent("https://godotengine.org/news/index.xml"))
+    .then(response => response.text())
+    .then(str => {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(str, "application/xml");
+      const items = xml.querySelectorAll("item");
+      
+      if (!items.length) throw new Error("Aucun article trouvé");
+
+      let output = '<ul class="list-group">';
+      for (let i = 0; i < Math.min(5, items.length); i++) {
+        const title = items[i].querySelector("title").textContent;
+        const link = items[i].querySelector("link").textContent;
+        const pubDate = new Date(items[i].querySelector("pubDate").textContent).toLocaleDateString();
+        output += `
+          <li class="list-group-item">
+            <a href="${link}" target="_blank" class="fw-bold">${title}</a><br>
+            <small class="text-muted">${pubDate}</small>
+          </li>`;
+      }
+      output += '</ul>';
+      document.getElementById("godot-feed").innerHTML = output;
+    })
+    .catch(error => {
+      console.error("Erreur lors du chargement du flux RSS :", error);
+      document.getElementById("godot-feed").innerText = "Impossible de charger les articles.";
+    });
+});
