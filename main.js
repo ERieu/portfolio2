@@ -104,3 +104,29 @@ nextArrow.addEventListener('click', () => {
 // Initialiser la timeline
 updateTimeline(0);
 });
+
+fetch("https://api.rss2json.com/v1/api.json?rss_url=https://godotengine.org/news/index.xml")
+  .then(res => res.json())
+  .then(data => {
+    let output = '<ul class="list-group">';
+    data.items.slice(0, 5).forEach(item => {
+      output += `
+        <li class="list-group-item">
+          <a href="${item.link}" target="_blank" class="fw-bold">${item.title}</a>
+          <br>
+          <small class="text-muted">${new Date(item.pubDate).toLocaleDateString()}</small>
+        </li>`;
+    });
+    output += '</ul>';
+    const feedElement = document.getElementById("godot-feed");
+    if (feedElement) {
+      feedElement.innerHTML = output;
+    }
+  })
+  .catch(error => {
+    console.error("Erreur lors du chargement du flux RSS :", error);
+    const feedElement = document.getElementById("godot-feed");
+    if (feedElement) {
+      feedElement.innerText = "Impossible de charger les articles.";
+    }
+  });
