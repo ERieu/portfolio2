@@ -256,3 +256,35 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+// Ajoutez ce code à la fin de votre fichier main.js
+
+// Gestion des cartes de projet et leurs boutons GitHub
+document.addEventListener('DOMContentLoaded', function() {
+  const projectCards = document.querySelectorAll('.projects-card');
+  
+  projectCards.forEach(card => {
+    // Gestion du clic sur la carte
+    card.addEventListener('click', function(e) {
+      // Si le clic est sur le bouton GitHub, ne pas exécuter l'action de la carte
+      if (e.target.classList.contains('github-button') || 
+          e.target.parentElement.classList.contains('github-button')) {
+        // Ne rien faire, laisser le lien s'ouvrir normalement
+        return;
+      }
+      
+      // Si le clic est ailleurs sur la carte, vous pouvez ajouter une action ici
+      // Par exemple, ouvrir une modal avec plus d'informations sur le projet
+      console.log('Carte cliquée:', this.querySelector('.heading').textContent);
+    });
+    
+    // Empêcher la propagation du clic sur le bouton GitHub
+    const githubButton = card.querySelector('.github-button');
+    if (githubButton) {
+      githubButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Le lien s'ouvrira normalement
+      });
+    }
+  });
+});
