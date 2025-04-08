@@ -105,7 +105,7 @@ nextArrow.addEventListener('click', () => {
 updateTimeline(0);
 });
 
-// Remplacez votre code RSS existant dans main.js par celui-ci
+// Remplacez la partie du code RSS dans main.js par celle-ci
 document.addEventListener("DOMContentLoaded", function () {
   const feedContainer = document.getElementById("godot-feed");
   
@@ -118,23 +118,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // URL du flux RSS
   const rssUrl = "https://godotengine.org/rss.xml";
   
-  // Utiliser rss2json comme service de conversion pour contourner les problèmes CORS
+  // Utiliser un service de proxy CORS alternatif
+  // Option 1: RSS2JSON avec HTTPS explicite
   const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
   
+  // Option 2: Utiliser un autre service comme AllOrigins
+  const allOriginsUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+  
+  // Essayer d'abord avec rss2json
   fetch(apiUrl)
     .then(response => {
-      if (!response.ok) throw new Error("Erreur réseau");
+      if (!response.ok) throw new Error("Erreur réseau avec RSS2JSON");
       return response.json();
     })
     .then(data => {
-      if (data.status !== "ok") throw new Error("Erreur dans la réponse API");
+      if (data.status !== "ok") throw new Error("Réponse API invalide");
       
       // Récupérer les articles
       const articles = data.items;
       
       if (!articles || articles.length === 0) {
-        feedContainer.innerHTML = '<div class="alert alert-warning">Aucun article trouvé.</div>';
-        return;
+        throw new Error("Aucun article trouvé dans la réponse");
       }
       
       // Créer le HTML pour les articles
@@ -175,16 +179,80 @@ document.addEventListener("DOMContentLoaded", function () {
       feedContainer.innerHTML = output;
     })
     .catch(error => {
-      console.error("Erreur lors du chargement du flux:", error);
+      console.error("Erreur avec RSS2JSON, essai avec AllOrigins:", error);
       
-      // Afficher un message d'erreur plus convivial
-      feedContainer.innerHTML = `
-        <div class="alert alert-danger">
-          <h4 class="alert-heading">Impossible de charger les articles</h4>
-          <p>Désolé, nous ne pouvons pas récupérer les derniers articles du blog Godot pour le moment.</p>
-          <hr>
-          <p class="mb-0">Vous pouvez visiter directement <a href="https://godotengine.org/news/" target="_blank" class="alert-link">le blog Godot</a>.</p>
-        </div>
-      `;
+      // Si rss2json échoue, essayer avec AllOrigins comme alternative
+      fetch(allOriginsUrl)
+        .then(response => {
+          if (!response.ok) throw new Error("Erreur réseau avec AllOrigins");
+          return response.text();
+        })
+        .then(xmlText => {
+          // Parser le XML manuellement
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+          
+          // Extraire les informations du XML
+          const items = xmlDoc.querySelectorAll("item");
+          
+          if (items.length === 0) {
+            throw new Error("Aucun article trouvé dans le XML");
+          }
+          
+          // Créer le HTML pour les articles
+          let output = '<div class="godot-articles">';
+          
+          // Afficher au maximum 5 articles
+          for (let i = 0; i < Math.min(5, items.length); i++) {
+            const item = items[i];
+            
+            const title = item.querySelector("title").textContent;
+            const link = item.querySelector("link").textContent;
+            const description = item.querySelector("description").textContent;
+            const pubDateText = item.querySelector("pubDate").textContent;
+            
+            // Créer une version courte de la description sans les balises HTML
+            const shortDescription = description
+              .replace(/<[^>]*>?/gm, '') // Enlever les balises HTML
+              .substr(0, 150) + '...'; // Limiter la longueur
+              
+            // Formater la date
+            const pubDate = new Date(pubDateText).toLocaleDateString('fr-FR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            
+            output += `
+              <div class="card bg-dark text-light mb-3 border-secondary">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a href="${link}" target="_blank" class="text-decoration-none text-info">
+                      ${title}
+                    </a>
+                  </h5>
+                  <p class="card-text">${shortDescription}</p>
+                  <p class="card-text"><small class="text-secondary">Publié le ${pubDate}</small></p>
+                </div>
+              </div>
+            `;
+          }
+          
+          output += '</div>';
+          feedContainer.innerHTML = output;
+        })
+        .catch(finalError => {
+          console.error("Toutes les tentatives ont échoué:", finalError);
+          
+          // Afficher un message d'erreur final
+          feedContainer.innerHTML = `
+            <div class="alert alert-warning">
+              <h4 class="alert-heading">Impossible de charger les articles</h4>
+              <p>Désolé, nous ne pouvons pas récupérer les derniers articles du blog Godot pour le moment.</p>
+              <hr>
+              <p class="mb-0">Vous pouvez visiter directement <a href="https://godotengine.org/news/" target="_blank" class="alert-link">le blog Godot</a>.</p>
+            </div>
+          `;
+        });
     });
 });
