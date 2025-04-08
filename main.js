@@ -105,42 +105,86 @@ nextArrow.addEventListener('click', () => {
 updateTimeline(0);
 });
 
+// Remplacez votre code RSS existant dans main.js par celui-ci
 document.addEventListener("DOMContentLoaded", function () {
   const feedContainer = document.getElementById("godot-feed");
+  
+  // Si le conteneur n'existe pas, ne rien faire
+  if (!feedContainer) return;
+  
+  // Afficher un message de chargement
+  feedContainer.innerHTML = '<div class="d-flex justify-content-center my-3"><div class="spinner-border text-light" role="status"><span class="visually-hidden">Chargement...</span></div></div>';
+  
+  // URL du flux RSS
   const rssUrl = "https://godotengine.org/news/index.xml";
-  const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssUrl);
-
-  fetch(proxyUrl)
+  
+  // Utiliser rss2json comme service de conversion pour contourner les problèmes CORS
+  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+  
+  fetch(apiUrl)
     .then(response => {
-      if (!response.ok) throw new Error("Erreur lors du chargement du flux RSS");
+      if (!response.ok) throw new Error("Erreur réseau");
       return response.json();
     })
     .then(data => {
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(data.contents, "text/xml");
-      const items = xml.querySelectorAll("item");
-
-      if (!items.length) {
-        feedContainer.innerHTML = "Aucun article trouvé.";
+      if (data.status !== "ok") throw new Error("Erreur dans la réponse API");
+      
+      // Récupérer les articles
+      const articles = data.items;
+      
+      if (!articles || articles.length === 0) {
+        feedContainer.innerHTML = '<div class="alert alert-warning">Aucun article trouvé.</div>';
         return;
       }
-
-      let output = '<ul class="list-group">';
-      for (let i = 0; i < Math.min(5, items.length); i++) {
-        const title = items[i].querySelector("title").textContent;
-        const link = items[i].querySelector("link").textContent;
-        const pubDate = new Date(items[i].querySelector("pubDate").textContent).toLocaleDateString();
+      
+      // Créer le HTML pour les articles
+      let output = '<div class="godot-articles">';
+      
+      // Afficher au maximum 5 articles
+      for (let i = 0; i < Math.min(5, articles.length); i++) {
+        const article = articles[i];
+        
+        // Créer une version courte de la description sans les balises HTML
+        const shortDescription = article.description
+          .replace(/<[^>]*>?/gm, '') // Enlever les balises HTML
+          .substr(0, 150) + '...'; // Limiter la longueur
+          
+        // Formater la date
+        const pubDate = new Date(article.pubDate).toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        
         output += `
-          <li class="list-group-item">
-            <a href="${link}" target="_blank" class="fw-bold text-decoration-none">${title}</a><br>
-            <small class="text-muted">${pubDate}</small>
-          </li>`;
+          <div class="card bg-dark text-light mb-3 border-secondary">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="${article.link}" target="_blank" class="text-decoration-none text-info">
+                  ${article.title}
+                </a>
+              </h5>
+              <p class="card-text">${shortDescription}</p>
+              <p class="card-text"><small class="text-secondary">Publié le ${pubDate}</small></p>
+            </div>
+          </div>
+        `;
       }
-      output += '</ul>';
+      
+      output += '</div>';
       feedContainer.innerHTML = output;
     })
     .catch(error => {
-      console.error("Erreur :", error);
-      feedContainer.innerHTML = "Impossible de charger les articles du blog Godot.";
+      console.error("Erreur lors du chargement du flux:", error);
+      
+      // Afficher un message d'erreur plus convivial
+      feedContainer.innerHTML = `
+        <div class="alert alert-danger">
+          <h4 class="alert-heading">Impossible de charger les articles</h4>
+          <p>Désolé, nous ne pouvons pas récupérer les derniers articles du blog Godot pour le moment.</p>
+          <hr>
+          <p class="mb-0">Vous pouvez visiter directement <a href="https://godotengine.org/news/" target="_blank" class="alert-link">le blog Godot</a>.</p>
+        </div>
+      `;
     });
 });
