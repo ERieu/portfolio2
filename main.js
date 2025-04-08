@@ -106,14 +106,24 @@ updateTimeline(0);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("https://corsproxy.io/?" + encodeURIComponent("https://godotengine.org/news/index.xml"))
-    .then(response => response.text())
-    .then(str => {
+  const feedContainer = document.getElementById("godot-feed");
+  const rssUrl = "https://godotengine.org/news/index.xml";
+  const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssUrl);
+
+  fetch(proxyUrl)
+    .then(response => {
+      if (!response.ok) throw new Error("Erreur lors du chargement du flux RSS");
+      return response.json();
+    })
+    .then(data => {
       const parser = new DOMParser();
-      const xml = parser.parseFromString(str, "application/xml");
+      const xml = parser.parseFromString(data.contents, "text/xml");
       const items = xml.querySelectorAll("item");
-      
-      if (!items.length) throw new Error("Aucun article trouvé");
+
+      if (!items.length) {
+        feedContainer.innerHTML = "Aucun article trouvé.";
+        return;
+      }
 
       let output = '<ul class="list-group">';
       for (let i = 0; i < Math.min(5, items.length); i++) {
@@ -122,15 +132,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const pubDate = new Date(items[i].querySelector("pubDate").textContent).toLocaleDateString();
         output += `
           <li class="list-group-item">
-            <a href="${link}" target="_blank" class="fw-bold">${title}</a><br>
+            <a href="${link}" target="_blank" class="fw-bold text-decoration-none">${title}</a><br>
             <small class="text-muted">${pubDate}</small>
           </li>`;
       }
       output += '</ul>';
-      document.getElementById("godot-feed").innerHTML = output;
+      feedContainer.innerHTML = output;
     })
     .catch(error => {
-      console.error("Erreur lors du chargement du flux RSS :", error);
-      document.getElementById("godot-feed").innerText = "Impossible de charger les articles.";
+      console.error("Erreur :", error);
+      feedContainer.innerHTML = "Impossible de charger les articles du blog Godot.";
     });
 });
