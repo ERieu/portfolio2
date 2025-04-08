@@ -19,16 +19,19 @@
     </section>
     <section id="about-me">
         <div class="container">
+          <div class="row">
             <h1>A propos de moi</h1>
             <br/>
             <p class="fs-4">
                 Actuellement étudiant en 2eme année de BTS SIO SLAM, je suis passionné par les jeux vidéos, l'informatique et le monde de la tech de manière plus générale depuis un bon moment. <br/>
                 Je poursuis une formation dans le développement informatique car j'ai pour objectif de travailler dans le monde du jeu vidéo en tant que développeur ou game designer, pour le moment je n'ai pas vraiment fait mon choix. <br/>
             </p>
+          </div>
             <div class="row">
                 <h2>Mon parcours</h2>
             </div>
-            <div class="horizontal-timeline">
+            <div class="row">
+              <div class="horizontal-timeline">
                 <div class="timeline-navigation">
                   <button class="timeline-arrow prev-arrow" disabled>&lt;</button>
                   <div class="timeline-progress">
@@ -56,7 +59,7 @@
                       <p class="heading">BAC professionnel SN | Seconde</p>
                       <div class="card-content">
                         <p>
-                          Première année de BAC pro en tronc commun durant laquelle j'ai appris des choses sur les composants d'un ordinateur, des réseaux informatiques comme les adrresses IP, MAC et autre.
+                          Première année de BAC pro en tronc commun durant laquelle j'ai appris des choses sur les composants d'un ordinateur, des réseaux informatiques comme les adresses IP, MAC et autre.
                           J'ai également appris des choses par rapport au circuits électrique et les équipements en domotique.
                         </p>
                       </div>
@@ -68,7 +71,9 @@
                       <div class="card-content">
                         <p>
                           Deuxième année de BAC pro et durant laquelle laquelle j'ai du choisir mon option.
-                          J'ai choisi l'option RISC car 
+                          J'ai choisi l'option RISC car c'est celle qui me semblait le plus se rapprocher de ce que je souhaitait faire.
+                          J'ai donc appris davantage de choses sur les réseaux informatique, leur configuration, l'utilisation de VM et j'ai également appris certaines choses
+                          sur le HTML et le CSS lors de certains cours. 
                         </p>
                       </div>
                     </div>
@@ -77,7 +82,10 @@
                     <div class="custom-card timeline-custom-card">
                       <p class="heading">BAC professionnel SN - Option RISC | Terminale</p>
                       <div class="card-content">
-                        <p>Description de votre première expérience professionnelle, ce que vous avez appris, et comment cela a influencé votre parcours.</p>
+                        <p>Troisième année de BAC pro, lors de cette dernière année de j'ai appris davantage de chose en développement web,
+                          en configurations de serveurs, de routeurs et sur l'utilisation de VM. j'ai également fait un peu de code avec Arduino et de Python
+                          durant certains TP.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -85,7 +93,10 @@
                     <div class="custom-card timeline-custom-card">
                       <p class="heading">BTS SIO SLAM | 1ere année</p>
                       <div class="card-content">
-                        <p>Description de votre première expérience professionnelle, ce que vous avez appris, et comment cela a influencé votre parcours.</p>
+                        <p>
+                          Pendant cette première année de BTS SIO qui a commencé en tronc commun j'ai pu revoir différentes choses liés aux réseaux informatique et à Linux,
+                          j'ai aussi pu approfondir mes connaissances en HTML, CSS et Python. J'ai aussi appris de nouvelles choses avec la partie SLAM comme coder avec PHP et Kotlin.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -93,12 +104,16 @@
                     <div class="custom-card timeline-custom-card">
                       <p class="heading">BTS SIO SLAM | 2eme année</p>
                       <div class="card-content">
-                        <p>Description de votre première expérience professionnelle, ce que vous avez appris, et comment cela a influencé votre parcours.</p>
+                        <p>
+                          2eme année qui n'a pas de partie réseau contrairement à la première année, j'ai appris à utiliser des frameworks comme Angular et Spring Boot,
+                          j'ai appris à coder en JavaScript et j'ai pu appronfondir mes connaissances sur Kotlin ainsi que sur la cybersécurité lors de cours théorique. 
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
         </div>
     </section>
     <section id="projects">
@@ -107,24 +122,37 @@
                 <h1>Projets</h1>
             </div>
             <div class="cards-container d-flex">
-                <div class="projects-card">
-                    <p class="heading">Popular this month</p>
-                    <p>Powered By</p>
+                <div class="projects-card";">
+                    <p class="heading">Savon-App</p>
+                    <p>
+                      développement du front-end pour l'application web
+                      de l'entreprise Adepro avec Angular.
+                    </p>
                     <p>Uiverse</p>
                 </div>
                 <div class="projects-card">
-                    <p class="heading">Popular this month</p>
-                    <p>Powered By</p>
+                    <p class="heading">Savon API</p>
+                    <p>
+                      Développement du back-end pour l'application web
+                      de l'entreprise Adepro avec Spring Boot.
+                    </p>
                     <p>Uiverse</p>
                 </div>
-                <div class="projects-card">
-                    <p class="heading">Popular this month</p>
-                    <p>Powered By</p>
+                <div class="projects-card" style="background: url(img/geoworld.png); background-size: cover;">
+                    <p class="heading">Geoworld</p>
+                    <p>
+                      Utilisation d'un template Bootstrap, de PHP et d'une
+                      base de données pour faire un site répertoriant des
+                      données sur les pays du monde.
+                    </p>
                     <p>Uiverse</p>
                 </div>
-                <div class="projects-card">
-                    <p class="heading">Popular this month</p>
-                    <p>Powered By</p>
+                <div class="projects-card" style="background: url(img/acf2l.png); background-size: cover;">
+                    <p class="heading">ACF2L</p>
+                    <p>
+                      Utilisation et modification d'un template Bootstrap pour réaliser
+                      un site pour une association fictive d'aéronautique. 
+                    </p>
                     <p>Uiverse</p>
                 </div> 
             </div>          
