@@ -105,28 +105,27 @@ nextArrow.addEventListener('click', () => {
 updateTimeline(0);
 });
 
-fetch("https://api.rss2json.com/v1/api.json?rss_url=https://godotengine.org/news/index.xml")
-  .then(res => res.json())
-  .then(data => {
+fetch("https://corsproxy.io/?" + encodeURIComponent("https://godotengine.org/news/index.xml"))
+  .then(response => response.text())
+  .then(str => {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(str, "application/xml");
+    const items = xml.querySelectorAll("item");
     let output = '<ul class="list-group">';
-    data.items.slice(0, 5).forEach(item => {
+    for (let i = 0; i < Math.min(5, items.length); i++) {
+      const title = items[i].querySelector("title").textContent;
+      const link = items[i].querySelector("link").textContent;
+      const pubDate = new Date(items[i].querySelector("pubDate").textContent).toLocaleDateString();
       output += `
         <li class="list-group-item">
-          <a href="${item.link}" target="_blank" class="fw-bold">${item.title}</a>
-          <br>
-          <small class="text-muted">${new Date(item.pubDate).toLocaleDateString()}</small>
+          <a href="${link}" target="_blank" class="fw-bold">${title}</a><br>
+          <small class="text-muted">${pubDate}</small>
         </li>`;
-    });
-    output += '</ul>';
-    const feedElement = document.getElementById("godot-feed");
-    if (feedElement) {
-      feedElement.innerHTML = output;
     }
+    output += '</ul>';
+    document.getElementById("godot-feed").innerHTML = output;
   })
   .catch(error => {
     console.error("Erreur lors du chargement du flux RSS :", error);
-    const feedElement = document.getElementById("godot-feed");
-    if (feedElement) {
-      feedElement.innerText = "Impossible de charger les articles.";
-    }
+    document.getElementById("godot-feed").innerText = "Impossible de charger les articles.";
   });
